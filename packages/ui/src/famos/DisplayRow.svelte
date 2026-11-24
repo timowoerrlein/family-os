@@ -15,6 +15,8 @@
 		note,
 		subtitle,
 		trail,
+		onpress,
+		pressLabel,
 		class: className = '',
 	}: {
 		variant?: 'idle' | 'lit' | 'now' | 'past' | 'empty';
@@ -30,6 +32,10 @@
 		subtitle?: string;
 		/** Small text or icon at the end of the row. */
 		trail?: Snippet;
+		/** Makes the whole row a button (a display that may tick things off). */
+		onpress?: () => void;
+		/** What the button does, said to a screen reader ("Mark done: Take out the bins"). */
+		pressLabel?: string;
 		class?: string;
 	} = $props();
 
@@ -42,7 +48,7 @@
 	} as const;
 </script>
 
-<div class="flex min-w-0 items-center gap-2.5 rounded-lg px-3 py-2.5 {looks[variant]} {className}">
+{#snippet content()}
 	{#if time !== undefined}
 		<span class="w-[4.75rem] shrink-0 text-sm font-bold whitespace-nowrap tabular-nums">{time}</span
 		>
@@ -70,4 +76,23 @@
 	{#if trail}<span class="text-ink-soft flex shrink-0 items-center gap-1.5 text-xs"
 			>{@render trail()}</span
 		>{/if}
-</div>
+{/snippet}
+
+{#if onpress}
+	<button
+		type="button"
+		onclick={onpress}
+		aria-label={pressLabel}
+		class="flex w-full min-w-0 items-center gap-2.5 rounded-lg px-3 py-2.5 text-left active:opacity-70 {looks[
+			variant
+		]} {className}"
+	>
+		{@render content()}
+	</button>
+{:else}
+	<div
+		class="flex min-w-0 items-center gap-2.5 rounded-lg px-3 py-2.5 {looks[variant]} {className}"
+	>
+		{@render content()}
+	</div>
+{/if}

@@ -7,6 +7,9 @@
 	import type { SlotContribution } from '@famos/ui/slots';
 	import { api } from '#lib/api.js';
 	import SleepCover from '#lib/SleepCover.svelte';
+	import { ActionError } from '#lib/offline-queue.js';
+	import { sendAction } from '#lib/offline-send.js';
+	import { randomId } from '#lib/random-id.js';
 	import { appearance } from '#lib/appearance.svelte.js';
 	import { browserFormatLocale } from '#lib/family.svelte.js';
 	import { memberPhotoUrl } from '#lib/member-photo.js';
@@ -112,8 +115,19 @@
 		awaitedChange: () => undefined,
 		awaitedNew: () => [],
 		roleManagers: () => undefined,
-		// A display only looks: no actions, no offline queue.
-		runAction: () => Promise.reject(new Error('Displays cannot run actions')),
+		// A display runs only what an admin let it (ticking off a task); the server refuses the rest.
+		// No offline queue: it has no member to queue for.
+		runAction: async (actionId, input) => {
+			const result = await sendAction(actionId, input, randomId());
+			if (result.status >= 200 && result.status < 300)
+				return { queued: false, ...(result.body as object) } as never;
+			const error = (result.body as { error?: { code?: string; message?: string } } | null)?.error;
+			throw new ActionError(
+				result.status,
+				error?.code ?? 'unknown',
+				error?.message ?? `Error ${result.status}`,
+			);
+		},
 		waiting: () => [],
 		offline: () => false,
 		query: () => new URLSearchParams(),

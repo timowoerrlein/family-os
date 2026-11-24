@@ -60,6 +60,12 @@ export const tasksComplete = defineCapability({
 	label: 'lists:cap_tasks_complete',
 	level: 'use',
 });
+/** A display an admin let tick off tasks: it has no person, so the completion names none. */
+export const tasksDisplayComplete = defineCapability({
+	id: 'lists.tasks.displayComplete',
+	label: 'lists:cap_tasks_display_complete',
+	level: 'view',
+});
 const memberId = selfOf;
 
 /** Plans the reminder for a task as it is now (after an insert, edit, completion or reopen). */
@@ -434,6 +440,7 @@ export const completeTask = defineAction({
 	}),
 	output: TaskCompletedSchema,
 	requires: tasksComplete.id,
+	displayMay: tasksDisplayComplete.id,
 	approval: 'ai',
 	// Done already, or its due date moved on: running it would change nothing, and its undo
 	// would reopen a completion somebody else made.

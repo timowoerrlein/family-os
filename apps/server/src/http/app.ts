@@ -441,7 +441,12 @@ function mountAction(app: OpenAPIHono<AppEnv>, deps: HttpAppDeps, def: AnyAction
 	// biome-ignore lint/suspicious/noExplicitAny: generic adapter over user-defined action types.
 	app.openapi(route, (async (c: any) => {
 		// Sign-in here; the action runner checks `requires` and approval.
-		const actor = requireActor(c, deps.kernel.access, 'signedIn');
+		// A display reaches only an action marked `displayMay`; the runner checks its grant.
+		const caller = c.get('actor');
+		const actor =
+			def.displayMay !== undefined && caller?.kind === 'display'
+				? caller
+				: requireActor(c, deps.kernel.access, 'signedIn');
 		const key: string | undefined = c.req.valid('header')['idempotency-key'];
 		let replayed = false;
 		const result = await deps.kernel.runner.invoke(def.id, c.req.valid('json'), actor, {

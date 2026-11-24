@@ -110,6 +110,7 @@
 	"cap_view": "See tasks and shopping lists",
 	"cap_tasks_edit": "Add and change tasks for anyone",
 	"cap_tasks_complete": "Tick off tasks",
+	"cap_tasks_display_complete": "Tick off tasks on a display",
 	"cap_shopping_edit": "Add and tick off shopping items",
 	"cap_shopping_manage": "Create, rename and remove shopping lists",
 	"feature_name": "Lists",

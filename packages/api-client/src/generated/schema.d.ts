@@ -3845,6 +3845,7 @@ export interface operations {
                         id: string;
                         label: string;
                         owner: string;
+                        acts: boolean;
                     }[];
                 };
             };

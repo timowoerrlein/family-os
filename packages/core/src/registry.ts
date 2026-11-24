@@ -363,6 +363,15 @@ export function buildRegistry(
 	for (const action of actions.values()) {
 		const owner = actionOwner.get(action.id) as string;
 		known(action.requires, `Action "${action.id}"`, owner);
+		known(action.displayMay, `Action "${action.id}"`, owner);
+		if (action.displayMay !== undefined) {
+			const cap = capabilities.get(action.displayMay);
+			if (action.readOnly || cap?.level !== 'view' || !cap.id.startsWith(`${owner}.`))
+				refuse(
+					owner,
+					`Action "${action.id}" displayMay must be a view capability of its own extension, on a data-changing action`,
+				);
+		}
 		const unless = typeof action.approval === 'object' ? action.approval.unless : undefined;
 		known(unless, `Action "${action.id}"`, owner);
 		if (!action.readOnly && !action.requires && !unless) {

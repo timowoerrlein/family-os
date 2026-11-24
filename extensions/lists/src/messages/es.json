@@ -118,6 +118,7 @@
 	"cap_view": "Ver tareas y listas de la compra",
 	"cap_tasks_edit": "Añadir y cambiar tareas de cualquiera",
 	"cap_tasks_complete": "Marcar tareas como hechas",
+	"cap_tasks_display_complete": "Marcar tareas como hechas en la pantalla",
 	"cap_shopping_edit": "Añadir y marcar artículos de la compra",
 	"cap_shopping_manage": "Crear, renombrar y quitar listas de la compra",
 	"feature_name": "Listas",

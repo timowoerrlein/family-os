@@ -4,12 +4,13 @@
 	import { useNow } from '@famos/ui/now';
 	import { ListChecks } from '@lucide/svelte';
 	import type { Task } from '../contract/index.js';
-	import { loadTasks } from './data.js';
+	import { completeTask, loadTasks } from './data.js';
 	import { dueLabel, urgency } from './format.js';
 	import { useLists } from './i18n.js';
 
 	/**
-	 * Family display widget: the open tasks, those due today or overdue first. Read-only.
+	 * Family display widget: the open tasks, those due today or overdue first. A display an admin
+	 * let tick off tasks (`lists.tasks.displayComplete`) completes one by tapping its row.
 	 */
 	let { rows }: { rows?: number } = $props();
 	const { app, t } = useLists();
@@ -20,6 +21,21 @@
 	const now = $derived(clock.current);
 	const today = $derived(todayIn(app.timeZone(), now));
 	const names = $derived(app.can('core.members.view'));
+	const mayTick = $derived(app.can('lists.tasks.displayComplete'));
+	/** Tasks just ticked, hidden until the refresh confirms them. */
+	let ticking = $state<Record<string, true>>({});
+	async function tick(task: Task) {
+		if (ticking[task.id]) return;
+		ticking[task.id] = true;
+		try {
+			await completeTask(app, task, t('label_complete', { title: task.title }));
+			await load();
+		} catch {
+			// The task stays on the list; a tap tries again.
+		} finally {
+			delete ticking[task.id];
+		}
+	}
 
 	let tasks = $state<Task[]>([]);
 	async function load() {
@@ -37,7 +53,7 @@
 	const byDue = (a: Task, b: Task) =>
 		(a.dueDate ?? '').localeCompare(b.dueDate ?? '') ||
 		(a.dueTime ?? '').localeCompare(b.dueTime ?? '');
-	const open = $derived(tasks.filter((task) => task.doneAt === null));
+	const open = $derived(tasks.filter((task) => task.doneAt === null && !ticking[task.id]));
 	/** Due or overdue first, then tasks without a date, then the ones further away. */
 	const ordered = $derived.by(() => {
 		const due = open.filter((task) =>
@@ -71,7 +87,13 @@
 		<DisplayRow variant="empty" title={t('display_no_tasks')} />
 	{:else}
 		{#each ordered.slice(0, max) as { task, lit } (task.id)}
-			<DisplayRow variant={lit ? 'lit' : 'idle'} title={task.title} subtitle={subtitle(task)}>
+			<DisplayRow
+				variant={lit ? 'lit' : 'idle'}
+				title={task.title}
+				subtitle={subtitle(task)}
+				onpress={mayTick ? () => void tick(task) : undefined}
+				pressLabel={mayTick ? t('label_complete', { title: task.title }) : undefined}
+			>
 				{#snippet lead()}
 					{@const member = assignee(task)}
 					{#if member}

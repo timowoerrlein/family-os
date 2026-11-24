@@ -110,6 +110,7 @@
 	"cap_view": "Taken en boodschappenlijsten zien",
 	"cap_tasks_edit": "Taken toevoegen en wijzigen voor iedereen",
 	"cap_tasks_complete": "Taken afvinken",
+	"cap_tasks_display_complete": "Taken afvinken op het scherm",
 	"cap_shopping_edit": "Boodschappen toevoegen en afvinken",
 	"cap_shopping_manage": "Boodschappenlijsten maken, hernoemen en verwijderen",
 	"feature_name": "Lijsten",

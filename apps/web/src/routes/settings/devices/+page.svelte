@@ -83,8 +83,14 @@
 	let optionsLoaded = $state(false);
 	// Only what a display can show: a capability is offered when the display's Today (family
 	// mode), a display widget, a status pill or ambient mode needs it (`requires`).
-	const { offered: shown, optIn } = displayOptions(familyModeCapabilities(), contributions.slots);
-	const options = $derived(allOptions.filter((o) => shown.has(o.id)));
+	const { offered: shown, optIn: shownOptIn } = displayOptions(
+		familyModeCapabilities(),
+		contributions.slots,
+	);
+	/** What lets a display change something: always offered, and never ticked at first. */
+	let acting = $state<string[]>([]);
+	const optIn = $derived(new Set([...shownOptIn, ...acting]));
+	const options = $derived(allOptions.filter((o) => shown.has(o.id) || acting.includes(o.id)));
 
 	// Adding a device. A display's pairing link (`?code=`) opens the sheet at the screen's steps.
 	let adding = $state(false);
@@ -192,6 +198,7 @@
 		if (!optionsLoaded) {
 			const caps = await api.GET('/api/v1/core/displays/capabilities');
 			allOptions = (caps.data ?? []).map((c) => ({ id: c.id, label: tDynamic(c.label) }));
+			acting = (caps.data ?? []).filter((c) => c.acts).map((c) => c.id);
 			optionsLoaded = true;
 		}
 		loaded = true;

@@ -12,6 +12,7 @@
 			"lists.view",
 			"lists.tasks.edit",
 			"lists.tasks.complete",
+			"lists.tasks.displayComplete",
 			"lists.shopping.edit",
 			"lists.shopping.manage"
 		]

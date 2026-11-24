@@ -84,6 +84,12 @@ export interface ActionDefinition<
 	 */
 	readonly requires?: string;
 	/**
+	 * Lets a paired family display run this action when it was granted this view capability (an
+	 * admin ticks it for that display). Without it a display runs no action. The action is still
+	 * decided like any other (its approval policy, its input), and the display has no self.
+	 */
+	readonly displayMay?: string;
+	/**
 	 * Where the action is reachable. `app` (the default): the app's own API, for a person's
 	 * session. `internal`: plumbing for jobs (a feed's last-read mark); it has no HTTP route, and
 	 * the runner refuses a person or a display, so only the system runs it (and the AI, for a
@@ -338,6 +344,7 @@ export function defineAction<
 	output: Out;
 	readOnly?: boolean;
 	requires?: string;
+	displayMay?: string;
 	/**
 	 * `'app'` (the default), `'internal'` (see `ActionDefinition.expose`), or one or more public
 	 * API operations (`defineApi`), which also leave the action on the app's own API.

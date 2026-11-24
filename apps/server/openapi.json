@@ -1877,12 +1877,16 @@
 											},
 											"owner": {
 												"type": "string"
+											},
+											"acts": {
+												"type": "boolean"
 											}
 										},
 										"required": [
 											"id",
 											"label",
-											"owner"
+											"owner",
+											"acts"
 										]
 									}
 								}

@@ -91,7 +91,10 @@ export function admission(def: AnyActionDefinition, actor: Actor, env: DecideEnv
 	// one that is not known at run time is refused.
 	switch (actor.kind) {
 		case 'display':
-			// A display only looks: no action, not even a read-only one.
+			// A display only looks, except for the one action an admin let it run (`displayMay`,
+			// a view capability granted to that display): no other action, not even a read-only one.
+			if (def.displayMay !== undefined && def.expose !== 'internal' && can(def.displayMay))
+				return null;
 			return { reason: 'display' };
 		case 'member':
 		case 'app':

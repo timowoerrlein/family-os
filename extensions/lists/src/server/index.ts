@@ -42,6 +42,7 @@ import {
 	restoreTask,
 	taskChanged,
 	tasksComplete,
+	tasksDisplayComplete,
 	tasksEdit,
 	updateTask,
 } from './tasks.ts';
@@ -82,7 +83,14 @@ export default defineExtension({
 	],
 	routes: [listTasks, getTask, listShoppingLists, listShoppingItems],
 	events: [taskChanged, shoppingChanged],
-	capabilities: [listsView, tasksEdit, tasksComplete, shoppingEdit, shoppingManage],
+	capabilities: [
+		listsView,
+		tasksEdit,
+		tasksComplete,
+		tasksDisplayComplete,
+		shoppingEdit,
+		shoppingManage,
+	],
 	notifications: [taskDueKind],
 	jobs: [remindJob],
 });

@@ -285,7 +285,17 @@ function mountDisplayRoutes(
 		responses: {
 			200: {
 				description: 'View capabilities of the extensions that are on',
-				...json(z.array(z.object({ id: z.string(), label: z.string(), owner: z.string() }))),
+				...json(
+					z.array(
+						z.object({
+							id: z.string(),
+							label: z.string(),
+							owner: z.string(),
+							/** Lets the display change something (an action's `displayMay`), not only show it. */
+							acts: z.boolean(),
+						}),
+					),
+				),
 			},
 			...errorResponses,
 		},
@@ -298,11 +308,17 @@ function mountDisplayRoutes(
 				reason: 'capability',
 				capability: CORE_CAPABILITIES.devicesManage.id,
 			});
+		const acts = new Set(
+			[...kernel.registry.actions.values()].flatMap((def) =>
+				def.displayMay === undefined ? [] : [def.displayMay],
+			),
+		);
 		return c.json(
 			devices.grantableCapabilities().map((cap) => ({
 				id: cap.id,
 				label: cap.label,
 				owner: cap.id.split('.')[0] as string,
+				acts: acts.has(cap.id),
 			})),
 			200,
 		);

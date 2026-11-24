@@ -1,6 +1,6 @@
 # Family displays
 
-A display (a **screen** in the app) is a wall tablet or TV that shows today's plans without anyone signing in. It can only look: it cannot change anything or sign anyone in. Screens and shared family devices are listed under **Settings → Family → Devices** (admins).
+A display (a **screen** in the app) is a wall tablet or TV that shows today's plans without anyone signing in. It can only look: it cannot sign anyone in, and it changes nothing except what you let it (ticking off tasks, see below). Screens and shared family devices are listed under **Settings → Family → Devices** (admins).
 
 ## Add a screen
 
@@ -53,6 +53,7 @@ What appears depends on **What it may show**. Each tick is a permission to look;
 | **See the calendar** | The next thing with its countdown, and the day (a column, lane or row per person). Without it, no day. |
 | **See the chores and whose turn it is** | Today's chores as rings (in Lanes, a ring at the start of each lane). |
 | **See tasks and shopping lists** | Shopping as a number with the first few things named, tasks due today in the day, open tasks in the bottom band. |
+| **Tick off tasks on a display** | Off by default. Tapping a task in the bottom band marks it done, for nobody in particular: anyone passing the screen can do it. Needs *See tasks and shopping lists*. |
 | **See the recipes and the meal plan** | Today's meals in the day and under **Kitchen**. |
 | **Show the weather (Today and displays)** | Temperature, next hours and a sentence linking the weather to the day. |
 | **Show family photos on a display** | A photo of the day, and the ambient mode slideshow. |

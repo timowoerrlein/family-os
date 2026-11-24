@@ -110,6 +110,7 @@
 	"cap_view": "Görevleri ve alışveriş listelerini görmek",
 	"cap_tasks_edit": "Herkes için görev ekleyip değiştirmek",
 	"cap_tasks_complete": "Görevleri tamamlamak",
+	"cap_tasks_display_complete": "Ekranda görevleri tamamlamak",
 	"cap_shopping_edit": "Alışveriş ürünü ekleyip işaretlemek",
 	"cap_shopping_manage": "Alışveriş listesi oluşturup adlandırmak ve kaldırmak",
 	"feature_name": "Listeler",

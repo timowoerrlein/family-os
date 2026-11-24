@@ -110,6 +110,7 @@
 	"cap_view": "Aufgaben und Einkaufslisten ansehen",
 	"cap_tasks_edit": "Aufgaben für alle hinzufügen und ändern",
 	"cap_tasks_complete": "Aufgaben abhaken",
+	"cap_tasks_display_complete": "Aufgaben auf dem Display abhaken",
 	"cap_shopping_edit": "Einkaufsartikel hinzufügen und abhaken",
 	"cap_shopping_manage": "Einkaufslisten erstellen, umbenennen und entfernen",
 	"feature_name": "Listen",
